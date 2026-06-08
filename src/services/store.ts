@@ -6,11 +6,49 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 
-const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера
+import { rootReducer } from './rootReducer';
+import { socketMiddleware } from './middleware/socketMiddleware';
+import {
+  feedWsConnect,
+  feedWsDisconnect,
+  feedWsOnMessage
+} from './slices/feedSlice';
+import {
+  ordersWsConnect,
+  ordersWsDisconnect,
+  ordersWsOnMessage
+} from './slices/ordersSlice';
+
+const WS_URL =
+  process.env.BURGER_API_URL?.replace('https', 'wss').replace(
+    '/api',
+    '/orders'
+  ) ?? 'wss://norma.education-services.ru/orders';
 
 const store = configureStore({
   reducer: rootReducer,
-  devTools: process.env.NODE_ENV !== 'production'
+  devTools: process.env.NODE_ENV !== 'production',
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      socketMiddleware(
+        WS_URL,
+        {
+          connect: feedWsConnect.type,
+          disconnect: feedWsDisconnect.type,
+          onMessage: feedWsOnMessage.type
+        },
+        false
+      ),
+      socketMiddleware(
+        WS_URL,
+        {
+          connect: ordersWsConnect.type,
+          disconnect: ordersWsDisconnect.type,
+          onMessage: ordersWsOnMessage.type
+        },
+        true
+      )
+    )
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
