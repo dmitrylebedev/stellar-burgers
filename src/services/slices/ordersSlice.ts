@@ -8,9 +8,8 @@ type TProfileWsMessage = {
 
 export const ordersWsConnect = createAction('orders/wsConnect');
 export const ordersWsDisconnect = createAction('orders/wsDisconnect');
-export const ordersWsOnMessage = createAction<TProfileWsMessage>(
-  'orders/wsOnMessage'
-);
+export const ordersWsOnMessage =
+  createAction<TProfileWsMessage>('orders/wsOnMessage');
 
 export type TOrdersState = {
   orders: TOrder[];

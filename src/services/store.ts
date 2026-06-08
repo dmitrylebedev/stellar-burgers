@@ -20,8 +20,10 @@ import {
 } from './slices/ordersSlice';
 
 const WS_URL =
-  process.env.BURGER_API_URL?.replace('https', 'wss').replace('/api', '/orders') ??
-  'wss://norma.education-services.ru/orders';
+  process.env.BURGER_API_URL?.replace('https', 'wss').replace(
+    '/api',
+    '/orders'
+  ) ?? 'wss://norma.education-services.ru/orders';
 
 const store = configureStore({
   reducer: rootReducer,

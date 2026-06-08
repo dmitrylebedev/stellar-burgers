@@ -9,9 +9,14 @@ export const selectIngredientsError = (state: RootState) =>
 export const selectBurgerConstructor = (state: RootState) =>
   state.burgerConstructor;
 
-export const selectOrderRequest = (state: RootState) => state.order.orderRequest;
+export const selectOrderRequest = (state: RootState) =>
+  state.order.orderRequest;
 export const selectOrderModalData = (state: RootState) =>
   state.order.orderModalData;
+export const selectOrderByNumber = (state: RootState) =>
+  state.order.orderByNumber;
+export const selectOrderByNumberRequest = (state: RootState) =>
+  state.order.orderByNumberRequest;
 
 export const selectUser = (state: RootState) => state.user.user;
 export const selectIsAuthChecked = (state: RootState) =>

@@ -8,7 +8,6 @@ import {
   feedWsDisconnect,
   fetchFeeds
 } from '../../services/slices/feedSlice';
-import { FeedInfo } from '@components';
 
 export const Feed: FC = () => {
   const dispatch = useDispatch();
@@ -29,9 +28,6 @@ export const Feed: FC = () => {
   }
 
   return (
-    <>
-      <FeedUI orders={orders} handleGetFeeds={() => dispatch(fetchFeeds())} />
-      <FeedInfo />
-    </>
+    <FeedUI orders={orders} handleGetFeeds={() => dispatch(fetchFeeds())} />
   );
 };

@@ -1,30 +1,35 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { getOrderByNumberApi } from '@api';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient, TOrder } from '@utils-types';
-import { useSelector } from '../../services/store';
-import { selectIngredients } from '../../services/selectors';
+import { TIngredient } from '@utils-types';
+import { useDispatch, useSelector } from '../../services/store';
+import {
+  selectIngredients,
+  selectOrderByNumber,
+  selectOrderByNumberRequest
+} from '../../services/selectors';
+import {
+  clearOrderByNumber,
+  getOrderByNumber
+} from '../../services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
+  const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
-  const [orderData, setOrderData] = useState<TOrder | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const orderData = useSelector(selectOrderByNumber);
+  const isLoading = useSelector(selectOrderByNumberRequest);
 
   useEffect(() => {
-    if (!number) return;
+    if (number) {
+      dispatch(getOrderByNumber(Number(number)));
+    }
 
-    setIsLoading(true);
-    getOrderByNumberApi(Number(number))
-      .then((data) => {
-        if (data.success && data.orders.length > 0) {
-          setOrderData(data.orders[0]);
-        }
-      })
-      .finally(() => setIsLoading(false));
-  }, [number]);
+    return () => {
+      dispatch(clearOrderByNumber());
+    };
+  }, [dispatch, number]);
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;

@@ -4,6 +4,7 @@ import {
   loginUserApi,
   logoutApi,
   registerUserApi,
+  updateUserApi,
   TLoginData,
   TRegisterData
 } from '@api';
@@ -58,6 +59,14 @@ export const logoutUser = createAsyncThunk('user/logout', async () => {
   deleteCookie('accessToken');
 });
 
+export const updateUser = createAsyncThunk(
+  'user/update',
+  async (data: Partial<TRegisterData>) => {
+    const response = await updateUserApi(data);
+    return response.user;
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -91,6 +100,18 @@ export const userSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'Ошибка обновления профиля';
       });
   }
 });

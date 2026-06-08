@@ -7,12 +7,9 @@ type TWsActionTypes = {
   onMessage: string;
 };
 
-export const socketMiddleware = (
-  wsUrl: string,
-  actionTypes: TWsActionTypes,
-  withToken = false
-): Middleware => {
-  return (store) => {
+export const socketMiddleware =
+  (wsUrl: string, actionTypes: TWsActionTypes, withToken = false): Middleware =>
+  (store) => {
     let socket: WebSocket | null = null;
 
     return (next) => (action) => {
@@ -63,4 +60,3 @@ export const socketMiddleware = (
       return next(action);
     };
   };
-};

@@ -56,115 +56,115 @@ const App = () => {
     navigate(background?.pathname ?? '/', { replace: true });
   };
 
-  if (!isAuthChecked || isIngredientsLoading) {
-    return <Preloader />;
-  }
-
-  if (error) {
-    return (
-      <div className={styles.app}>
-        <AppHeader />
-        <div className={`${styles.error} text text_type_main-medium pt-4`}>
-          {error}
-        </div>
-      </div>
-    );
-  }
+  const isAppLoading = !isAuthChecked || isIngredientsLoading;
 
   return (
     <div className={styles.app}>
-      <AppHeader />
-      <Routes location={background || location}>
-        <Route path='/' element={<ConstructorPage />} />
-        <Route path='/feed' element={<Feed />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
-        <Route
-          path='/login'
-          element={
-            <ProtectedRoute onlyUnAuth>
-              <Login />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/register'
-          element={
-            <ProtectedRoute onlyUnAuth>
-              <Register />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/forgot-password'
-          element={
-            <ProtectedRoute onlyUnAuth>
-              <ForgotPassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/reset-password'
-          element={
-            <ProtectedRoute onlyUnAuth>
-              <ResetPassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/profile'
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/profile/orders'
-          element={
-            <ProtectedRoute>
-              <ProfileOrders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/profile/orders/:number'
-          element={
-            <ProtectedRoute>
-              <OrderInfo />
-            </ProtectedRoute>
-          }
-        />
-        <Route path='*' element={<NotFound404 />} />
-      </Routes>
+      {isAppLoading ? (
+        <Preloader />
+      ) : error ? (
+        <>
+          <AppHeader />
+          <div className={`${styles.error} text text_type_main-medium pt-4`}>
+            {error}
+          </div>
+        </>
+      ) : (
+        <>
+          <AppHeader />
+          <Routes location={background || location}>
+            <Route path='/' element={<ConstructorPage />} />
+            <Route path='/feed' element={<Feed />} />
+            <Route path='/ingredients/:id' element={<IngredientDetails />} />
+            <Route path='/feed/:number' element={<OrderInfo />} />
+            <Route
+              path='/login'
+              element={
+                <ProtectedRoute onlyUnAuth>
+                  <Login />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/register'
+              element={
+                <ProtectedRoute onlyUnAuth>
+                  <Register />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/forgot-password'
+              element={
+                <ProtectedRoute onlyUnAuth>
+                  <ForgotPassword />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/reset-password'
+              element={
+                <ProtectedRoute onlyUnAuth>
+                  <ResetPassword />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/profile'
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/profile/orders'
+              element={
+                <ProtectedRoute>
+                  <ProfileOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/profile/orders/:number'
+              element={
+                <ProtectedRoute>
+                  <OrderInfo />
+                </ProtectedRoute>
+              }
+            />
+            <Route path='*' element={<NotFound404 />} />
+          </Routes>
 
-      {background && (
-        <Routes>
-          <Route
-            path='/ingredients/:id'
-            element={
-              <Modal title='' onClose={handleModalClose}>
-                <IngredientDetails />
-              </Modal>
-            }
-          />
-          <Route
-            path='/feed/:number'
-            element={
-              <Modal title='' onClose={handleModalClose}>
-                <OrderInfo />
-              </Modal>
-            }
-          />
-          <Route
-            path='/profile/orders/:number'
-            element={
-              <Modal title='' onClose={handleModalClose}>
-                <OrderInfo />
-              </Modal>
-            }
-          />
-        </Routes>
+          {background && (
+            <Routes>
+              <Route
+                path='/ingredients/:id'
+                element={
+                  <Modal title='' onClose={handleModalClose}>
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
+              <Route
+                path='/feed/:number'
+                element={
+                  <Modal title='' onClose={handleModalClose}>
+                    <OrderInfo />
+                  </Modal>
+                }
+              />
+              <Route
+                path='/profile/orders/:number'
+                element={
+                  <Modal title='' onClose={handleModalClose}>
+                    <OrderInfo />
+                  </Modal>
+                }
+              />
+            </Routes>
+          )}
+        </>
       )}
     </div>
   );
