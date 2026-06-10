@@ -19,18 +19,21 @@ describe('Страница конструктора бургера', () => {
       addIngredient(MAIN_NAME);
       addIngredient(SAUCE_NAME);
 
-      cy.contains('(верх)').should('contain', BUN_NAME);
-      cy.contains('(низ)').should('contain', BUN_NAME);
-      cy.contains(MAIN_NAME).should('exist');
-      cy.contains(SAUCE_NAME).should('exist');
+      cy.get('[data-cy="burger-constructor"]').within(() => {
+        cy.contains('(верх)').should('contain', BUN_NAME);
+        cy.contains('(низ)').should('contain', BUN_NAME);
+        cy.contains(MAIN_NAME).should('exist');
+        cy.contains(SAUCE_NAME).should('exist');
+      });
     });
   });
 
   describe('Модальное окно ингредиента', () => {
     it('открывает модальное окно с данными выбранного ингредиента', () => {
       cy.contains('li', MAIN_NAME).find('a').click();
-      cy.get('[class*="modal"]').should('exist');
-      cy.contains('h3', MAIN_NAME).should('be.visible');
+      cy.get('[data-cy="modal"]').within(() => {
+        cy.contains('h3', MAIN_NAME).should('be.visible');
+      });
     });
 
     it('закрывает модальное окно по клику на крестик', () => {
